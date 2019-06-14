@@ -1,7 +1,7 @@
 {
     // ADB command location.
     "adb_command": "adb",
-    
+
     // ADB arguments that should be used.
     "adb_args": ["logcat", "-v", "threadtime"],
 
@@ -16,14 +16,14 @@
     "adb_maxlines": 100000,
 
     // A regex filter that is used when selecting which lines to display
-    "adb_filter": ".",
+    "adb_filter": ".*cocos.*",
 
     // Whether or not to just go ahead and launch ADB if there's only one device attached
     "adb_launch_single": true,
 
     // Remove filtered lines instead of folding them up
     "adb_strip_filtered_lines": false,
-    
+
     // full or partial app package name to filter log
     "adb_app_package": "",
 }
