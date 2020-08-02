@@ -237,7 +237,8 @@ class ADBView(object):
         self.__view.set_name(self.__name)
         self.__view.set_scratch(True)
         self.__view.set_read_only(True)
-        self.__view.set_syntax_file("Packages/ADBView/adb.tmLanguage")
+        # self.__view.set_syntax_file("Packages/ADBView/adb.tmLanguage")
+        self.__view.set_syntax_file("adb.tmLanguage")
         # "scroll_past_end" affects our auto scrolling feature, and it is default to 
         # True on all platforms except macOS.
         self.__view.settings().set("scroll_past_end", False)
@@ -287,7 +288,7 @@ class ADBView(object):
         if self.__app_package:
             adb = get_setting("adb_command")
             # cmd_pid = [adb, "shell", "pidof", self.__app_package]
-            cmd_pid = [adb, "shell", "pgrep", self.__app_package]
+            cmd_pid = [adb, "shell", "pgrep", "-f", self.__app_package]
             proc_pid = subprocess.Popen(cmd_pid, shell=process_shell, stdout=subprocess.PIPE)
             app_pid, err = proc_pid.communicate()
             
