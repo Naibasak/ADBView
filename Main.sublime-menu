@@ -1,19 +1,56 @@
-[  
-  {
-    "caption": "AdbView",
-    "mnemonic": "A",
-    "id": "AdbView",
-    "children":
-    [
-        { "command": "adb_filter_by_process_id", "caption": "ADB Filter by Process ID" },
-        { "command": "adb_filter_by_tag_name", "caption": "ADB Filter by Tag Name" },
-        { "command": "adb_filter_by_thread_id", "caption": "ADB Filter By Thread ID" },
-        { "command": "adb_filter_by_message_level", "caption": "ADB Filter by Message Level" },
-        { "command": "adb_filter_by_debuggable_apps", "caption": "ADB Filter by Debuggable Apps" },
-        { "command": "adb_filter_by_containing_selections", "caption": "ADB Filter by Containing Selections" },
-        { "command": "adb_filter_by_excluding_selections", "caption": "ADB Filter by Excluding Selections" },
-        { "command": "adb_set_filter", "caption": "ADB Custom Regular Expression Filter" },
-        { "command": "adb_clear_view", "caption": "ADB Clear View" }
-    ]
-  }
+[
+    {
+        "mnemonic": "n",
+        "caption": "Preferences",
+        "id": "preferences",
+        "children":
+        [
+            {
+                "mnemonic": "P",
+                "caption": "Package Settings",
+                "id": "package-settings",
+                "children": [
+                    {
+                        "caption": "ADBView",
+                        "children": [
+                            {
+                                "caption": "Settings – Default",
+                                "args": {
+                                    "file": "${packages}/ADBView/ADBView.sublime-settings"
+                                },
+                                "command": "open_file"
+                            },
+                            {
+                                "caption": "Settings – User",
+                                "args": {
+                                    "file": "${packages}/User/ADBView.sublime-settings"
+                                },
+                                "command": "open_file"
+                            },
+                            {
+                                "caption": "-"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "caption": "ADBView",
+        "mnemonic": "A",
+        "id": "ADBView",
+        "children":
+        [
+            { "command": "adb_filter_by_process_id", "caption": "ADB Filter by Process ID" },
+            { "command": "adb_filter_by_tag_name", "caption": "ADB Filter by Tag Name" },
+            { "command": "adb_filter_by_thread_id", "caption": "ADB Filter By Thread ID" },
+            { "command": "adb_filter_by_message_level", "caption": "ADB Filter by Message Level" },
+            { "command": "adb_filter_by_debuggable_apps", "caption": "ADB Filter by Debuggable Apps" },
+            { "command": "adb_filter_by_containing_selections", "caption": "ADB Filter by Containing Selections" },
+            { "command": "adb_filter_by_excluding_selections", "caption": "ADB Filter by Excluding Selections" },
+            { "command": "adb_set_filter", "caption": "ADB Custom Regular Expression Filter" },
+            { "command": "adb_clear_view", "caption": "ADB Clear View" },
+        ]
+    }
 ]

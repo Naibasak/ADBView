@@ -193,7 +193,7 @@ def set_filter(view, filter):
         adb_view.set_filter(filter)
     else:
         apply_filter(view, filter)
-    
+
 def set_filter_by_group(view, group, value):
     adb_view = get_adb_view(view)
     if adb_view:
@@ -206,7 +206,8 @@ def set_filter_by_group(view, group, value):
 
 def clear_logcat():
     adb = get_setting("adb_command")
-    cmd_clear = [adb, "logcat", "-c"]
+    adb_clear_branchs = get_setting("get_setting")
+    cmd_clear = [adb, "logcat", "-c"] + adb_clear_branchs
     proc_clear = subprocess.Popen(cmd_clear, shell=process_shell)
 
 
@@ -239,19 +240,19 @@ class ADBView(object):
         self.__view.set_read_only(True)
         # self.__view.set_syntax_file("Packages/ADBView/adb.tmLanguage")
         self.__view.set_syntax_file("adb.tmLanguage")
-        # "scroll_past_end" affects our auto scrolling feature, and it is default to 
+        # "scroll_past_end" affects our auto scrolling feature, and it is default to
         # True on all platforms except macOS.
         self.__view.settings().set("scroll_past_end", False)
-        
+
         if self.__app_package:
             self.add_text("Filtering log by package name '%s', disable option 'adb_app_package' to see full log" % self.__app_package)
-        
+
         self.add_text('Loading...')
         self.update_app_pid()
-        
+
         if info:
             self.add_text(info)
-        
+
         print("running: %s" % cmd)
         info = None
         if os.name == 'nt':
@@ -271,10 +272,10 @@ class ADBView(object):
         self.__filter_groups[group] = str(value)
         if self.__app_pid != -1:
             self.__filter_groups[PID_GROUP] = str(self.__app_pid)
-        
+
         filter = GROUPS_SEPARATOR.join(self.__filter_groups)
         self.set_filter(filter, folding)
-    
+
     def set_filter(self, filter, folding=True):
         try:
             self.__filter = re.compile(filter)
@@ -283,7 +284,7 @@ class ADBView(object):
         except:
             traceback.print_exc()
             sublime.error_message("invalid regex")
-    
+
     def update_app_pid(self):
         if self.__app_package:
             adb = get_setting("adb_command")
@@ -291,7 +292,7 @@ class ADBView(object):
             cmd_pid = [adb, "shell", "pgrep", "-f", self.__app_package]
             proc_pid = subprocess.Popen(cmd_pid, shell=process_shell, stdout=subprocess.PIPE)
             app_pid, err = proc_pid.communicate()
-            
+
             if not app_pid:
                 app_pid = 0
                 if self.__app_pid == -1:
@@ -299,18 +300,18 @@ class ADBView(object):
             else:
                 app_pid = decode(app_pid)
                 app_pid = int(app_pid.split('\n')[0].strip())
-            
+
             if self.__app_pid != app_pid:
                 self.__app_pid = app_pid
                 self.set_filter_by_group(PID_GROUP, app_pid, False, False)
                 if app_pid:
                     self.add_text("PID for process: '%s' [%s]" % (self.__app_package, app_pid))
-    
+
     def add_text(self, text):
         self.__view.set_read_only(False)
         self.__view.run_command('insert', {"characters": text + '\n'})
         self.__view.set_read_only(True)
-    
+
     @property
     def name(self):
         return self.__name
@@ -353,7 +354,7 @@ class ADBView(object):
         with self.__cond:
             self.__closing = True
             self.__cond.notify()
-    
+
     def __process_thread(self):
         while True:
             with self.__cond:
@@ -363,7 +364,7 @@ class ADBView(object):
 
             # collect more logs, for better performance
             time.sleep(0.01)
-            
+
             self.update_app_pid()
             sublime.set_timeout(self.__check_autoscroll, 0)
 
@@ -597,7 +598,7 @@ class AdbLaunch(sublime_plugin.WindowCommand):
         if fresh_logcat:
           clear_logcat()
           view_info = 'Logcat Cleared'
-        
+
         adb = get_setting("adb_command")
         cmd = [adb, "devices"]
         try:
@@ -646,7 +647,7 @@ class AdbLaunch(sublime_plugin.WindowCommand):
             version = str(version).strip()
             device = str(device).strip()
             self.options.append("%s %s - %s" % (product, version, device))
-        
+
         if len(self.options) == 0:
             sublime.status_message("ADB: No device attached!")
         elif len(self.options) == 1 and len(adb_views) == 0 and get_setting("adb_launch_single"):
